@@ -3,9 +3,10 @@ var express     = require("express"),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     Campground  = require("./models/campground"),
+    Comment     = require("./models/comment"),
     seedDB      = require("./seed");
 
-mongoose.connect('mongodb://localhost/yelp_camp_v3', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/yelp_camp_v4', {useNewUrlParser: true, useUnifiedTopology: true});
 
 app.set("view engine", "ejs");
 
@@ -29,7 +30,7 @@ app.get("/campgrounds", function(req, res)
         }
         else
         {
-            res.render("index", {campgrounds: allCampgrounds});
+            res.render("campgrounds/index", {campgrounds: allCampgrounds});
         }
     });
 });
@@ -37,7 +38,7 @@ app.get("/campgrounds", function(req, res)
 //New route
 app.get("/campgrounds/new", function(req, res)
 {
-    res.render("new");
+    res.render("campgrounds/new");
 });
 
 //Create route
@@ -75,8 +76,57 @@ app.get("/campgrounds/:id", function(req, res)
         }
         else
         {
-            res.render("show",{campground: foundCamp});
+            res.render("campgrounds/show",{campground: foundCamp});
         }
+    });
+});
+
+//=================
+//Comments routes
+//=================
+
+//New route
+app.get("/campgrounds/:id/comments/new", function(req, res)
+{
+    Campground.findOne({_id: req.params.id}, function(err, foundCamp)
+    {
+       if(err)
+       {
+           console.log(err);
+       }
+       else
+       {
+           res.render("comments/new", {campground: foundCamp});
+       }
+    });   
+});
+
+//Create route
+app.post("/campgrounds/:id/comments", function(req, res)
+{
+    Campground.findOne({_id: req.params.id}, function(err, foundCamp)
+    {
+       if(err)
+       {
+           console.log(err);
+           res.redirect("/campgrounds");
+       }
+       else
+       {
+           Comment.create(req.body.comment, function(err, newComment)
+           {
+               if(err)
+               {
+                   console.log(err);
+               }
+               else
+               {
+                   foundCamp.comments.push(newComment);
+                   foundCamp.save();
+                   res.redirect("/campgrounds/" + foundCamp._id);
+               }
+           });
+       }
     });
 });
 
@@ -84,5 +134,5 @@ app.get("/campgrounds/:id", function(req, res)
 // app.listen(process.env.PORT, process.env.IP, function()
 app.listen(8080, "0.0.0.0", function()
 {
-    console.log("YelpCamp server v3 has started!!!");
+    console.log("YelpCamp server v4 has started!!!");
 });
