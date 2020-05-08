@@ -6,7 +6,9 @@ var express     = require("express"),
     Comment     = require("./models/comment"),
     seedDB      = require("./seed");
 
-mongoose.connect('mongodb://localhost/yelp_camp_v4', {useNewUrlParser: true, useUnifiedTopology: true});
+app.use(express.static(__dirname + "/public"));
+
+mongoose.connect('mongodb://localhost/yelp_camp_v5', {useNewUrlParser: true, useUnifiedTopology: true});
 
 app.set("view engine", "ejs");
 
@@ -134,5 +136,5 @@ app.post("/campgrounds/:id/comments", function(req, res)
 // app.listen(process.env.PORT, process.env.IP, function()
 app.listen(8080, "0.0.0.0", function()
 {
-    console.log("YelpCamp server v4 has started!!!");
+    console.log("YelpCamp server v5 has started!!!");
 });
