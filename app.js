@@ -13,10 +13,10 @@ var campgroundRoutes        = require("./routes/campgrounds"),
     indexRoutes             = require("./routes/index");
 
 app.use(express.static(__dirname + "/public"));
-mongoose.connect('mongodb://localhost/yelp_camp_v7', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/yelp_camp_v8', {useNewUrlParser: true, useUnifiedTopology: true});
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
-seedDB();
+//seedDB();
 
 //Passport configuration
 app.use(require("express-session")(
@@ -50,5 +50,5 @@ app.use(indexRoutes);
 // app.listen(process.env.PORT, process.env.IP, function()
 app.listen(8080, "0.0.0.0", function()
 {
-    console.log("YelpCamp server v7 has started!!!");
+    console.log("YelpCamp server v8 has started!!!");
 });
