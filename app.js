@@ -5,6 +5,7 @@ var express                 = require("express"),
     seedDB                  = require("./seed"),
     passport                = require("passport"),
     LocalStrategy           = require("passport-local"),
+    methodOverride          = require("method-override"),
     User                    = require("./models/user");
 
 //Require routes
@@ -13,9 +14,11 @@ var campgroundRoutes        = require("./routes/campgrounds"),
     indexRoutes             = require("./routes/index");
 
 app.use(express.static(__dirname + "/public"));
-mongoose.connect('mongodb://localhost/yelp_camp_v9', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/yelp_camp_v10', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 //seedDB();
 
 //Passport configuration
@@ -47,8 +50,8 @@ app.use(indexRoutes);
 
 
 //Listen
-// app.listen(process.env.PORT, process.env.IP, function()
-app.listen(8080, "0.0.0.0", function()
+app.listen(process.env.PORT, process.env.IP, function()
+//app.listen(8080, "0.0.0.0", function()
 {
-    console.log("YelpCamp server v9 has started!!!");
+    console.log("YelpCamp server v10 has started!!!");
 });
