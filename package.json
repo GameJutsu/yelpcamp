@@ -1,7 +1,7 @@
 {
-  "name": "v10",
+  "name": "v11",
   "version": "1.0.0",
-  "description": "YelpCamp V10",
+  "description": "YelpCamp V11",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",

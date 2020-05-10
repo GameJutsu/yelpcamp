@@ -3,6 +3,7 @@ var express                 = require("express"),
     bodyParser              = require("body-parser"),
     mongoose                = require("mongoose"),
     seedDB                  = require("./seed"),
+    flash                   = require("connect-flash"),
     passport                = require("passport"),
     LocalStrategy           = require("passport-local"),
     methodOverride          = require("method-override"),
@@ -14,11 +15,12 @@ var campgroundRoutes        = require("./routes/campgrounds"),
     indexRoutes             = require("./routes/index");
 
 app.use(express.static(__dirname + "/public"));
-mongoose.connect('mongodb://localhost/yelp_camp_v10', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost/yelp_camp_v11', {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('useFindAndModify', false);
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 //seedDB();
 
 //Passport configuration
@@ -36,10 +38,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//Defining currentUser
+//Defining global variables
 app.use(function(req, res, next)
 {
-    res.locals.currentUser = req.user;
+    res.locals.currentUser  = req.user;
+    res.locals.error        = req.flash("error");
+    res.locals.success      = req.flash("success");
     next();
 });
 
@@ -53,5 +57,5 @@ app.use(indexRoutes);
 app.listen(process.env.PORT, process.env.IP, function()
 //app.listen(8080, "0.0.0.0", function()
 {
-    console.log("YelpCamp server v10 has started!!!");
+    console.log("YelpCamp server v11 has started!!!");
 });

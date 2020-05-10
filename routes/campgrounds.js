@@ -60,8 +60,10 @@ router.get("/:id", function(req, res)
 {
     Campground.findOne({_id: req.params.id}).populate("comments").exec(function(err, foundCamp)
     {
-        if(err)
+        if(err || !foundCamp)
         {
+            req.flash("error", "Campground not found!");
+            res.redirect("back");
             console.log(err);
         }
         else
@@ -78,6 +80,7 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req, res)
     {
         if(err)
         {
+            req.flash("error", "Can't find campground!");
             res.redirect("/campgrounds");
         }
         else
@@ -94,10 +97,12 @@ router.put("/:id", middleware.checkCampgroundOwnership, function(req, res)
     {
         if(err)
         {
+            req.flash("error", "Can't find campground!");
             res.redirect("/campgrounds");
         }
         else
         {
+            req.flash("success", "Campground successfully updated!");
             res.redirect("/campgrounds/" + req.params.id);
         }
     });
@@ -111,9 +116,11 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res)
         if(err)
         {
             res.redirect("/campgrounds");
+            req.flash("error", "Can't find campground!");
         }
         else
         {
+            req.flash("success", "Campground successfully deleted!");
             res.redirect("/campgrounds");
         }
     });
