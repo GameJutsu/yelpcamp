@@ -12,3 +12,12 @@
 {
     display: inline;
 }
+
+.comments_hr 
+{
+    width: 100%;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    margin: 10px auto;
+}
+
